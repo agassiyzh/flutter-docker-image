@@ -37,7 +37,7 @@ jobs:
         run: |
           FLUTTER_VERSION='stable'
           [[ "${{ github.ref }}" == "refs/tags/"* ]] && FLUTTER_VERSION=$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')
-          docker build . --file Dockerfile --tag $IMAGE_NAME --build-arg $FLUTTER_VERSION
+          docker build . --file Dockerfile --tag $IMAGE_NAME --build-arg flutter_version=$FLUTTER_VERSION
 
       - name: Push image
         run: |

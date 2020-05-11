@@ -13,6 +13,7 @@ env:
 
 jobs:
   android_build:
+    if: "contains(github.event.head_commit.message, '[android build]')"
     runs-on: ubuntu-latest
     
     steps:

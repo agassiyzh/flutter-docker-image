@@ -1,0 +1,59 @@
+name: flutter image build and push
+
+on:
+   push:
+     branches:    
+      - master
+     tags:
+       - 'v*'
+
+env:
+  ANDROID_IMAGE_NAME: android-base-sdk
+  FLUTTER_IMAGE_NAME: flutter
+
+jobs:
+  android_build:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@master
+
+      - name: Login to docker hub
+        if: success()
+        uses: actions-hub/docker/login@master
+        env:
+          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Build image
+        if: success()
+        run: docker build --file android/Dockerfile -t ${ANDROID_IMAGE_NAME}:latest .
+
+      - name: Push to docker registry
+        if: success()
+        uses: actions-hub/docker@master
+        with:
+          args: push ${ANDROID_IMAGE_NAME}:latest
+
+  flutter_build:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@master
+
+      - name: Login to docker hub
+        if: success()
+        uses: actions-hub/docker/login@master
+        env:
+          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Build image
+        if: success()
+        run: docker build --file Dockerfile -t ${FLUTTER_IMAGE_NAME}:latest .
+
+      - name: Push to docker registry
+        if: success()
+        uses: actions-hub/docker@master
+        with:
+          args: push ${FLUTTER_IMAGE_NAME}:latest

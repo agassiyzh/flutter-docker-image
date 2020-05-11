@@ -68,5 +68,5 @@ jobs:
           DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
       - name: Push to docker registry
         run: |
-          docker tag $IMAGE_NAME agassiyzh/flutter:$VERSION
-          docker push agassiyzh/flutter:$VERSION
+          docker tag $IMAGE_NAME flutter:$VERSION
+          docker push flutter:$VERSION

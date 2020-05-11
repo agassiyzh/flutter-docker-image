@@ -8,8 +8,8 @@ on:
        - 'v*'
 
 env:
-  ANDROID_IMAGE_NAME: android-base-sdk
-  FLUTTER_IMAGE_NAME: flutter
+  ANDROID_IMAGE_NAME: agassiyzh/android-base-sdk
+  FLUTTER_IMAGE_NAME: agassiyzh/flutter
 
 jobs:
   android_build:

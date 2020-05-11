@@ -15,7 +15,7 @@ on:
 
 env:
   # TODO: Change variable to your image's name.
-  IMAGE_NAME: android-base-sdk
+  IMAGE_NAME: flutter
 
 jobs:
 
@@ -31,7 +31,10 @@ jobs:
       - uses: actions/checkout@v2
 
       - name: Build image
-        run: docker build . --file android/Dockerfile --tag $IMAGE_NAME
+        run: |
+          FLUTTER_VERSION='stable'
+          [[ "${{ github.ref }}" == "refs/tags/"* ]] && FLUTTER_VERSION=$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')
+          docker build . --file Dockerfile --tag $IMAGE_NAME --build-arg $FLUTTER_VERSION
 
       - name: Log into registry
         run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login docker.pkg.github.com -u ${{ github.actor }} --password-stdin

@@ -75,5 +75,6 @@ jobs:
 
           # Use Docker `latest` tag convention
           [ "$VERSION" == "master" ] && VERSION=latest
+          docker images
           docker tag $IMAGE_NAME flutter:$VERSION
           docker push flutter:$VERSION

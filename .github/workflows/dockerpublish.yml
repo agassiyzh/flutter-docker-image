@@ -30,14 +30,14 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
+      - name: Log into registry
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login docker.pkg.github.com -u ${{ github.actor }} --password-stdin
+
       - name: Build image
         run: |
           FLUTTER_VERSION='stable'
           [[ "${{ github.ref }}" == "refs/tags/"* ]] && FLUTTER_VERSION=$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')
           docker build . --file Dockerfile --tag $IMAGE_NAME --build-arg $FLUTTER_VERSION
-
-      - name: Log into registry
-        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login docker.pkg.github.com -u ${{ github.actor }} --password-stdin
 
       - name: Push image
         run: |

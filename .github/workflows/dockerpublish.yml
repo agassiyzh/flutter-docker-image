@@ -60,3 +60,13 @@ jobs:
 
           docker tag $IMAGE_NAME $IMAGE_ID:$VERSION
           docker push $IMAGE_ID:$VERSION
+      - name: Login to docker hub
+        if: success()
+        uses: actions-hub/docker/login@master
+        env:
+          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+      - name: Push to docker registry
+        run: |
+          docker tag $IMAGE_NAME agassiyzh/flutter:$VERSION
+          docker push agassiyzh/flutter:$VERSION

@@ -52,7 +52,7 @@ jobs:
       - name: Build image
         if: success()
         run: |
-          FLUTTER_VERSION=$IMAGE_TAG
+          FLUTTER_VERSION=${GITHUB_REF##*/}
           [ $IMAGE_TAG='latest' ] && FLUTTER_VERSION=stable
           docker build --file Dockerfile -t ${FLUTTER_IMAGE_NAME}:${IMAGE_TAG} --build-arg flutter_version=$FLUTTER_VERSION .
 

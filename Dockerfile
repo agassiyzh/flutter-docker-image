@@ -8,7 +8,12 @@ ENV FLUTTER_ROOT=$FLUTTER_HOME
 
 ENV PATH ${PATH}:${FLUTTER_HOME}/bin:${FLUTTER_HOME}/bin/cache/dart-sdk/bin
 
+USER root
+
 RUN apt update && \
-    apt install jq && \
-    git clone --branch ${FLUTTER_VERSION} https://github.com/flutter/flutter.git ${FLUTTER_HOME} && \
+    apt install jq
+
+USER cirrus
+
+RUN git clone --branch ${FLUTTER_VERSION} https://github.com/flutter/flutter.git ${FLUTTER_HOME} && \
     flutter doctor

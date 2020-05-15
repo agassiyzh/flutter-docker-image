@@ -11,7 +11,7 @@ ENV PATH ${PATH}:${FLUTTER_HOME}/bin:${FLUTTER_HOME}/bin/cache/dart-sdk/bin
 USER root
 
 RUN apt update && \
-    apt install jq
+    apt install -y jq
 
 USER cirrus
 

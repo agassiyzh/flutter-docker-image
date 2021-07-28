@@ -1,4 +1,4 @@
-name: flutter image build and push
+name: android image build and push
 
 on: workflow_dispatch
 
@@ -20,6 +20,6 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           push: true
-          file: "android/Dockerfile"
-          tag: |
+          file: ./android/Dockerfile
+          tags: |
             ghcr.io/${{ github.repository }}/octo-image:latest

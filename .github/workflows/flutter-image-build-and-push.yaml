@@ -1,11 +1,6 @@
 name: flutter image build and push
 
-on:
-   push:
-     branches:    
-      - master
-     tags:
-       - '*'
+on: workflow_dispatch
 
 env:
   ANDROID_IMAGE_NAME: agassiyzh/android-base-sdk

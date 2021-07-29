@@ -1,58 +1,44 @@
 name: flutter image build and push
 
-on: workflow_dispatch
+on:
+  workflow_dispatch:
+    inputs:
+      flutter_version:
+        description: 'flutter version'
+        required: true
+        default: 'stable'
 
-env:
-  ANDROID_IMAGE_NAME: agassiyzh/android-base-sdk
-  FLUTTER_IMAGE_NAME: agassiyzh/flutter
 
 jobs:
-  android_build:
-    if: "contains(github.event.head_commit.message, '[android build]')"
-    runs-on: ubuntu-latest
-    
-    steps:
-      - uses: actions/checkout@master
-
-      - name: Login to docker hub
-        if: success()
-        uses: actions-hub/docker/login@master
-        env:
-          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
-
-      - name: Build image
-        if: success()
-        run: docker build --file android/Dockerfile -t ${ANDROID_IMAGE_NAME}:latest .
-
-      - name: Push to docker registry
-        if: success()
-        uses: actions-hub/docker@master
-        with:
-          args: push ${ANDROID_IMAGE_NAME}:latest
-
   flutter_build:
-    if: "!contains(github.event.head_commit.message, '[android build]')"
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@master
 
-      - name: Login to docker hub
-        if: success()
-        uses: actions-hub/docker/login@master
-        env:
-          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
-
-      - name: Build image
-        if: success()
-        run: |
-          FLUTTER_VERSION=${GITHUB_REF##*/}
-          [ $IMAGE_TAG='latest' ] && export FLUTTER_VERSION=stable
-          docker build --file Dockerfile -t ${FLUTTER_IMAGE_NAME}:${IMAGE_TAG} --build-arg flutter_version=$FLUTTER_VERSION .
-
-      - name: Push to docker registry
-        if: success()
-        uses: actions-hub/docker@master
+      - name: login to github Docker Registry
+        uses: docker/login-action@v1
         with:
-          args: push ${FLUTTER_IMAGE_NAME}:${IMAGE_TAG}
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: setup image version'
+        run: |
+          if [ ${{ github.event.inputs.flutter_version == 'stable '}} ]; then
+            echo "image_tag=latest" >> $GITHUB_ENV
+          else
+            echo "image_tag=${{ github.event.inputs.flutter_version }}" >> $GITHUB_ENV
+          fi
+
+
+      - name: build and push image
+        env:
+          IMAGE_VERSION: ${{ github.event.inputs.flutter_version == 'stable '}}
+        id: flutter_build
+        uses: docker/build-push-action@v2
+        with:
+          push: true
+          tags: |
+            ghcr.io/${{ github.repository }}/flutter:${{ env.image_tag }}
+          build-arg: |
+            flutter_version=${{ github.event.inputs.flutter_version }}

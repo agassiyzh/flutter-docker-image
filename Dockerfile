@@ -1,4 +1,4 @@
-FROM agassiyzh/android-base-sdk:latest
+FROM ghcr.io/agassiyzh/flutter-docker-image/android-base-sdk:latest
 
 ARG flutter_version
 

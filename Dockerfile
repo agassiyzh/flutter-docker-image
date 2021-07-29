@@ -13,7 +13,5 @@ USER root
 RUN apt update && \
     apt install -y jq
 
-USER cirrus
-
 RUN git clone --branch ${FLUTTER_VERSION} https://github.com/flutter/flutter.git ${FLUTTER_HOME} && \
     flutter doctor

@@ -24,7 +24,7 @@ jobs:
 
       - name: setup image version'
         run: |
-          if [ ${{ github.event.inputs.flutter_version == 'stable '}} ]; then
+          if [ ${{ github.event.inputs.flutter_version }} == 'stable ' ]; then
             echo "image_tag=latest" >> $GITHUB_ENV
           else
             echo "image_tag=${{ github.event.inputs.flutter_version }}" >> $GITHUB_ENV

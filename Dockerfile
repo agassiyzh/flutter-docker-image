@@ -13,6 +13,7 @@ USER root
 RUN apt update && \
     apt install -y jq
 
-RUN if [ $FLUTTER_VERSION ]; then tag_string="tags/${FLUTTER_VERSION}" ; fi &&\
+RUN if [ $FLUTTER_VERSION ]; then tag_string="tags/${FLUTTER_VERSION}" ; fi && \
+    echo $tag_string && \
     git clone $tag_string --branch ${FLUTTER_VERSION} https://github.com/flutter/flutter.git ${FLUTTER_HOME} && \
     flutter doctor

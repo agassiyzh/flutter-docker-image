@@ -40,5 +40,5 @@ jobs:
           push: true
           tags: |
             ghcr.io/${{ github.repository }}/flutter:${{ env.image_tag }}
-          build-arg: |
+          build-args: |
             flutter_version=${{ github.event.inputs.flutter_version }}

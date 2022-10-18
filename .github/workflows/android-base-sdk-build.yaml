@@ -22,4 +22,4 @@ jobs:
           push: true
           file: ./android/Dockerfile
           tags: |
-            ghcr.io/${{ github.repository }}/android-base-sdk:latest
+            ghcr.io/${{ github.repository }}/android-base-sdk:jdk17

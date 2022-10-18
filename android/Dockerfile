@@ -1,4 +1,4 @@
-FROM cirrusci/android-sdk:tools
+FROM ghcr.io/agassiyzh/docker-images-android/android-tools:jdk17
 
 ENV ANDROID_PLATFORM_VERSION 30
 ENV ANDROID_BUILD_TOOLS_VERSION 30.0.0
